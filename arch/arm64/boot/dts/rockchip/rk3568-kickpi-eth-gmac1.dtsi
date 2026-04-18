@@ -3,6 +3,7 @@
 &gmac1 {
 	phy-mode = "rgmii";
 	clock_in_out = "output";
+	phy-supply = <&vcc3v3_sys>;
 
 	snps,reset-gpio = <&gpio3 RK_PA7 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;

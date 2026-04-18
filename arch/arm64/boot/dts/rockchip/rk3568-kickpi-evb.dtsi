@@ -1705,6 +1705,7 @@
 
 &rknpu {
 	rknpu-supply = <&vdd_npu>;
+	interrupt-names = "npu_irq";
 	status = "okay";
 };
 
