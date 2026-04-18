@@ -394,10 +394,18 @@ static int maxio_mae0621aq3ci_suspend(struct phy_device *phydev)
 
 
 
+/*
+ * MaxIO MAE0621A PHYs power up with a non-zero paged register window, so
+ * a clause-22 read of PHYIDR1 (reg 2) returns 0xffff instead of the OUI
+ * 0x7b74 on some boards (KickPi K1A, seen as 0xffff4411 / 0xffff4412).
+ * PHYIDR2 (reg 3) still reports model+rev correctly. Match on the lower
+ * 16 bits only so the config_init callback can run and reset the PHY to
+ * page 0; later reads then return the canonical 0x7b744411 / 0x7b744412.
+ */
 static struct phy_driver maxio_nc_drvs[] = {
     {
         .phy_id		= 0x7b744411,
-		.phy_id_mask	= 0x7fffffff,
+		.phy_id_mask	= 0x0000ffff,
         .name       = "MAE0621A-Q2C Gigabit Ethernet",
 		.features	= PHY_GBIT_FEATURES ,
         .probe          = maxio_mae0621a_probe,
@@ -410,7 +418,7 @@ static struct phy_driver maxio_nc_drvs[] = {
      },
      {
         .phy_id		= 0x7b744412,
-		.phy_id_mask	= 0x7fffffff,
+		.phy_id_mask	= 0x0000ffff,
         .name       = "MAE0621A/B-Q3C(I) Gigabit Ethernet",
 		.features	= PHY_GBIT_FEATURES ,
 		.probe          = maxio_mae0621aq3ci_probe,
@@ -425,8 +433,8 @@ static struct phy_driver maxio_nc_drvs[] = {
 
 module_phy_driver(maxio_nc_drvs);
 static struct mdio_device_id __maybe_unused maxio_nc_tbl[] = {
-	{ 0x7b744411, 0x7fffffff },
-	{ 0x7b744412, 0x7fffffff },
+	{ 0x7b744411, 0x0000ffff },
+	{ 0x7b744412, 0x0000ffff },
 	{ }
 };
 
