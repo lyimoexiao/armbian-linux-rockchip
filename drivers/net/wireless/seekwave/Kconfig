@@ -1,0 +1,16 @@
+menuconfig WLAN_VENDOR_SEEKWAVE
+	bool "Seekwave (希微) devices"
+	default y
+	help
+	  If you have a wireless card belonging to this class, say Y.
+
+	  Note that the answer to this question doesn't directly affect the
+	  kernel: saying N will just cause the configurator to skip all the
+	  questions about these cards.
+
+if WLAN_VENDOR_SEEKWAVE
+
+source "drivers/net/wireless/seekwave/platform/Kconfig"
+source "drivers/net/wireless/seekwave/swt6621s_wifi/Kconfig"
+
+endif # WLAN_VENDOR_SEEKWAVE
