@@ -1102,6 +1102,7 @@ static const struct sdio_device_id skw_sdio_ids[] = {
 	{SDIO_DEVICE(0x1FFE, 0x6621)},
 	{},
 };
+MODULE_DEVICE_TABLE(sdio, skw_sdio_ids);
 
 static struct sdio_driver skw_sdio_driver = {
 	.probe = skw_sdio_probe,
