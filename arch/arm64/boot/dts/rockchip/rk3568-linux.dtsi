@@ -46,7 +46,25 @@
 	};
 };
 
+/*
+ * drm-logo@0 and drm-cubic-lut@0 are placeholders for a splash
+ * framebuffer region that downstream Rockchip U-Boot patches at
+ * handoff. Armbian uses a generic U-Boot that never fills these,
+ * so the reservation fails with "base 0x0, size 0 MiB" and the
+ * DRM driver logs "failed to parse loader memory". Drop both the
+ * phandle references in display-subsystem and the placeholder
+ * nodes themselves so the bootlog stays clean; boot logo is drawn
+ * by plymouth after init instead.
+ */
+&display_subsystem {
+	/delete-property/ memory-region;
+	/delete-property/ memory-region-names;
+};
+
 &reserved_memory {
+	/delete-node/ drm-logo@0;
+	/delete-node/ drm-cubic-lut@0;
+
 	ramoops: ramoops@110000 {
 		compatible = "ramoops";
 		reg = <0x0 0x110000 0x0 0xf0000>;
